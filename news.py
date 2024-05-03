@@ -1,4 +1,3 @@
-
 from datetime import datetime as dt
 
 def get_published_at(article: dict[str, str]) -> dt:

@@ -14,6 +14,8 @@ FROM_EMAIL: Final[str] = os.getenv('FROM_EMAIL')
 PASSWORD: Final[str] = os.getenv('PASSWORD')
 TO_EMAIL: Final[str] = os.getenv('TO_EMAIL')
 
+NEWS_URL: Final[str] = "https://newsapi.org/v2/everything"
+
 NEWS_PARAMS = {
     "q": "tesla",
     "sortBy": "popularity",
@@ -39,7 +41,7 @@ def price_change(today: float, yesterday: float) -> dict[str, float]:
     }
 
 def get_news_articles() -> list[Articles]:
-    news_response = requests.get("https://newsapi.org/v2/everything", params=NEWS_PARAMS)
+    news_response = requests.get(NEWS_URL, params=NEWS_PARAMS)
     news_response.raise_for_status()
 
     articles = news_response.json()['articles']
@@ -92,7 +94,7 @@ def main() -> None:
 if __name__ == "__main__":
     while True:
         now = dt.now()
-        if (now.hour == 22 or now.hour == 10) and now.minute == 0:
+        if now.hour == 22 and now.minute == 0:
             main()
             time.sleep(60)
         else:
